@@ -48,6 +48,8 @@ class HandleInertiaRequests extends Middleware
             'nav' => fn () => [
                 'phone' => SiteSetting::get('phone', '0456 155 078'),
                 'phone_raw' => SiteSetting::get('phone_raw', '+61456155078'),
+                'facebook_url' => SiteSetting::get('facebook_url', ''),
+                'instagram_url' => SiteSetting::get('instagram_url', ''),
             ],
         ];
     }

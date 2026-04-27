@@ -2,7 +2,7 @@
     <div class="min-h-screen">
         <Navbar :phone="nav.phone" :phone-raw="nav.phone_raw" />
         <slot />
-        <FooterSection />
+        <FooterSection :facebook-url="nav.facebook_url" :instagram-url="nav.instagram_url" />
     </div>
 </template>
 
