@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\QuoteRequestController as AdminQuoteRequestContro
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\PasswordController;
 use App\Http\Controllers\Admin\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,4 +57,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
     Route::put('/gallery/{galleryImage}', [GalleryController::class, 'update'])->name('gallery.update');
     Route::delete('/gallery/{galleryImage}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+
+    Route::get('/password', [PasswordController::class, 'edit'])->name('password');
+    Route::put('/password', [PasswordController::class, 'update'])->name('password.update');
 });

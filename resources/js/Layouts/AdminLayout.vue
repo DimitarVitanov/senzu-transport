@@ -133,6 +133,9 @@ const iconQuotes = () => h('svg', { fill: 'none', stroke: 'currentColor', viewBo
 const iconGallery = () => h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24', 'stroke-width': '1.5', class: 'w-5 h-5' }, [
     h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'm2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z' })
 ]);
+const iconPassword = () => h('svg', { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24', 'stroke-width': '1.5', class: 'w-5 h-5' }, [
+    h('path', { 'stroke-linecap': 'round', 'stroke-linejoin': 'round', d: 'M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z' })
+]);
 
 const navItems = [
     { href: '/admin', label: 'Dashboard', icon: iconDashboard },
@@ -142,6 +145,7 @@ const navItems = [
     { href: '/admin/testimonials', label: 'Testimonials', icon: iconTestimonials },
     { href: '/admin/quotes', label: 'Quote Requests', icon: iconQuotes },
     { href: '/admin/gallery', label: 'Gallery', icon: iconGallery },
+    { href: '/admin/password', label: 'Change Password', icon: iconPassword },
 ];
 
 function isActive(href) {
