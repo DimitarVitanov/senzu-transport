@@ -2,8 +2,13 @@
     <div class="hero-wrapper">
         <section id="home" class="hero-section">
             <!-- Full background truck image -->
-            <div class="hero-bg">
+            <div class="hero-bg hero-bg-desktop">
                 <img src="/images/hero-truck-2.webp"
+                     alt="Senzu Transport - Scania Truck"
+                     loading="eager" />
+            </div>
+            <div class="hero-bg hero-bg-mobile">
+                <img src="/images/hero-mobile.webp"
                      alt="Senzu Transport - Scania Truck"
                      loading="eager" />
             </div>
@@ -117,6 +122,10 @@ useScrollReveal();
     height: 100%;
     object-fit: cover;
     object-position: 60% 50%;
+}
+
+.hero-bg-mobile {
+    display: none;
 }
 
 .hero-overlay-lr {
@@ -335,13 +344,48 @@ useScrollReveal();
 }
 
 @media (max-width: 767px) {
+    .hero-bg-desktop {
+        display: none;
+    }
+
+    .hero-bg-mobile {
+        display: block;
+    }
+
+    .hero-bg-mobile img {
+        object-position: center bottom;
+    }
+
     .hero-section {
         min-height: 100vh;
-        padding-bottom: 24px;
+        min-height: 100dvh;
+        padding-bottom: 0;
+        align-items: stretch;
     }
 
     .hero-content {
-        padding-top: 3.5rem;
+        display: flex;
+        flex-direction: column;
+        padding: 5.5rem 1rem 2.5rem;
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+
+    .hero-text {
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .hero-overlay-lr {
+        background: linear-gradient(
+            to bottom,
+            rgba(10,10,10,0.92) 0%,
+            rgba(10,10,10,0.65) 40%,
+            rgba(10,10,10,0.15) 65%,
+            transparent 80%
+        );
     }
 
     .hero-title {
@@ -360,24 +404,23 @@ useScrollReveal();
     }
 
     .hero-bullets {
-        grid-template-columns: 1fr;
-        gap: 0.45rem;
-    }
-
-    .hero-bullet span {
-        font-size: 0.8rem;
+        display: none;
     }
 
     .hero-ctas {
         width: 100%;
+        flex-direction: column;
         gap: 0.65rem;
+        margin-top: auto;
+        padding-top: 2rem;
     }
 
     .cta-primary,
     .cta-secondary {
-        flex: 1 1 calc(50% - 0.33rem);
+        width: 100%;
         justify-content: center;
-        padding: 0.8rem 1rem;
+        padding: 1rem 1rem;
+        font-size: 1rem;
     }
 
     .hero-features-float {
