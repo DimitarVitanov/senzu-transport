@@ -8,7 +8,7 @@
                      loading="eager" />
             </div>
             <div class="hero-bg hero-bg-mobile">
-                <img src="/images/hero-mobile.webp"
+                <img src="/images/hero-mobile-1.webp"
                      alt="Senzu Transport - Scania Truck"
                      loading="eager" />
             </div>
@@ -381,18 +381,21 @@ useScrollReveal();
     .hero-overlay-lr {
         background: linear-gradient(
             to bottom,
-            rgba(10,10,10,0.8) 0%,
-            rgba(10,10,10,0.5) 35%,
-            rgba(10,10,10,0.15) 60%,
-            transparent 75%
+            rgba(10,10,10,0.98) 0%,
+            rgba(10,10,10,0.92) 28%,
+            rgba(10,10,10,0.45) 42%,
+            rgba(10,10,10,0.08) 55%,
+            transparent 65%
         );
     }
 
     .hero-overlay-bt {
         background: linear-gradient(
             to top,
-            rgba(10,10,10,0.25) 0%,
-            transparent 25%
+            rgba(10,10,10,0.95) 0%,
+            rgba(10,10,10,0.65) 18%,
+            rgba(10,10,10,0.15) 35%,
+            transparent 50%
         );
     }
 
