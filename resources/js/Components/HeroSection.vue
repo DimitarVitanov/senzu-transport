@@ -381,10 +381,18 @@ useScrollReveal();
     .hero-overlay-lr {
         background: linear-gradient(
             to bottom,
-            rgba(10,10,10,0.92) 0%,
-            rgba(10,10,10,0.65) 40%,
-            rgba(10,10,10,0.15) 65%,
-            transparent 80%
+            rgba(10,10,10,0.8) 0%,
+            rgba(10,10,10,0.5) 35%,
+            rgba(10,10,10,0.15) 60%,
+            transparent 75%
+        );
+    }
+
+    .hero-overlay-bt {
+        background: linear-gradient(
+            to top,
+            rgba(10,10,10,0.25) 0%,
+            transparent 25%
         );
     }
 
