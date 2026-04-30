@@ -8,7 +8,7 @@
                      loading="eager" />
             </div>
             <div class="hero-bg hero-bg-mobile">
-                <img src="/images/hero-mobile-1.webp"
+                <img src="/images/hero-mobile-2.webp"
                      alt="Senzu Transport - Scania Truck"
                      loading="eager" />
             </div>
@@ -400,7 +400,7 @@ useScrollReveal();
     }
 
     .hero-title {
-        font-size: clamp(1.75rem, 8.2vw, 2.35rem);
+        font-size: clamp(1.5rem, 7vw, 2rem);
         line-height: 1.02;
     }
 
@@ -409,8 +409,8 @@ useScrollReveal();
     }
 
     .hero-desc {
-        font-size: 0.9rem;
-        line-height: 1.55;
+        font-size: 0.82rem;
+        line-height: 1.5;
         max-width: 100%;
     }
 
@@ -430,8 +430,9 @@ useScrollReveal();
     .cta-secondary {
         width: 100%;
         justify-content: center;
-        padding: 1rem 1rem;
-        font-size: 1rem;
+        padding: 0.55rem 0.75rem;
+        font-size: 0.8rem;
+        min-width: unset;
     }
 
     .hero-features-float {
