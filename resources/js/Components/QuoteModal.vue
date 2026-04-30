@@ -98,6 +98,14 @@
                                 </div>
 
                                 <div>
+                                    <label class="block text-gray-300 text-xs font-semibold mb-1.5 uppercase tracking-wider">Email</label>
+                                    <input v-model="form.email" type="email" required
+                                           class="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-senzu/50 focus:ring-1 focus:ring-senzu/30 transition-colors"
+                                           placeholder="Your email address">
+                                    <p v-if="form.errors.email" class="text-red-400 text-xs mt-1">{{ form.errors.email }}</p>
+                                </div>
+
+                                <div>
                                     <label class="block text-gray-300 text-xs font-semibold mb-1.5 uppercase tracking-wider">Phone</label>
                                     <input v-model="form.phone" type="tel" required
                                            class="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-senzu/50 focus:ring-1 focus:ring-senzu/30 transition-colors"
@@ -152,6 +160,7 @@ const submitted = ref(false);
 
 const form = useForm({
     name: '',
+    email: '',
     phone: '',
     job_details: '',
     suburb: '',

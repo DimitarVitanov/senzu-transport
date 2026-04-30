@@ -20,6 +20,7 @@ class ContentSeeder extends Seeder
             ['key' => 'phone', 'value' => '0456 155 078', 'type' => 'text', 'group' => 'general'],
             ['key' => 'phone_raw', 'value' => '+61456155078', 'type' => 'text', 'group' => 'general'],
             ['key' => 'email', 'value' => 'senzutransport@gmail.com', 'type' => 'text', 'group' => 'general'],
+            ['key' => 'notification_email', 'value' => 'senzutransport@gmail.com', 'type' => 'text', 'group' => 'general'],
 
             // Hero
             ['key' => 'hero_badge', 'value' => "BRISBANE'S TRUSTED DELIVERY SPECIALISTS", 'type' => 'text', 'group' => 'hero'],

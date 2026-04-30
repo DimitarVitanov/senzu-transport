@@ -63,6 +63,13 @@
                                         <p v-if="form.errors.name" class="contact-error">{{ form.errors.name }}</p>
                                     </div>
                                     <div class="contact-field">
+                                        <label class="contact-label">Email</label>
+                                        <input v-model="form.email" type="email" required placeholder="Your email address" class="contact-input" />
+                                        <p v-if="form.errors.email" class="contact-error">{{ form.errors.email }}</p>
+                                    </div>
+                                </div>
+                                <div class="contact-form-row">
+                                    <div class="contact-field">
                                         <label class="contact-label">Phone</label>
                                         <input v-model="form.phone" type="tel" required placeholder="Your phone number" class="contact-input" />
                                         <p v-if="form.errors.phone" class="contact-error">{{ form.errors.phone }}</p>
@@ -210,6 +217,7 @@ const submitted = ref(false);
 
 const form = useForm({
     name: '',
+    email: '',
     phone: '',
     suburb: '',
     job_details: '',

@@ -18,6 +18,7 @@
                     <thead>
                         <tr class="text-slate-400 text-xs uppercase tracking-wider border-b border-white/10 bg-white/[0.02]">
                             <th class="text-left px-6 py-3">Name</th>
+                            <th class="text-left px-6 py-3">Email</th>
                             <th class="text-left px-6 py-3">Phone</th>
                             <th class="text-left px-6 py-3">Suburb</th>
                             <th class="text-left px-6 py-3">Details</th>
@@ -29,6 +30,10 @@
                     <tbody>
                         <tr v-for="q in quotes.data" :key="q.id" class="border-b border-white/5 hover:bg-white/[0.03] transition-colors">
                             <td class="px-6 py-3 text-white font-medium">{{ q.name }}</td>
+                            <td class="px-6 py-3">
+                                <a v-if="q.email" :href="'mailto:' + q.email" class="text-senzu hover:underline text-xs">{{ q.email }}</a>
+                                <span v-else class="text-slate-500 text-xs">—</span>
+                            </td>
                             <td class="px-6 py-3">
                                 <a :href="'tel:' + q.phone" class="text-senzu hover:underline">{{ q.phone }}</a>
                             </td>
@@ -60,6 +65,7 @@
                     <div class="flex items-start justify-between gap-3">
                         <div>
                             <p class="text-white font-semibold">{{ q.name }}</p>
+                            <a v-if="q.email" :href="'mailto:' + q.email" class="text-senzu text-sm hover:underline block">{{ q.email }}</a>
                             <a :href="'tel:' + q.phone" class="text-senzu text-sm hover:underline">{{ q.phone }}</a>
                             <p class="text-slate-400 text-xs mt-1">{{ q.suburb }}</p>
                         </div>
