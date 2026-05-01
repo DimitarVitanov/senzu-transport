@@ -24,20 +24,16 @@ class QuoteRequestController extends Controller
 
         $quote = QuoteRequest::create($validated);
 
-        try {
-            // Send notification to admin
-            $notificationEmail = SiteSetting::where('key', 'notification_email')->value('value')
-                ?? SiteSetting::where('key', 'email')->value('value')
-                ?? config('mail.from.address');
+        // Send notification to admin
+        $notificationEmail = SiteSetting::where('key', 'notification_email')->value('value')
+            ?? SiteSetting::where('key', 'email')->value('value')
+            ?? config('mail.from.address');
 
-            Mail::to($notificationEmail)->send(new QuoteRequestAdmin($quote));
+        Mail::to($notificationEmail)->queue(new QuoteRequestAdmin($quote));
 
-            // Send confirmation to the user
-            if ($quote->email) {
-                Mail::to($quote->email)->send(new QuoteRequestConfirmation($quote));
-            }
-        } catch (\Exception $e) {
-            Log::error('Failed to send quote email: ' . $e->getMessage());
+        // Send confirmation to the user
+        if ($quote->email) {
+            Mail::to($quote->email)->queue(new QuoteRequestConfirmation($quote));
         }
 
         return back()->with('success', 'Quote request submitted successfully! We will contact you shortly.');
