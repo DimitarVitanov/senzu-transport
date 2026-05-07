@@ -3,7 +3,7 @@
         <section id="home" class="hero-section">
             <!-- Full background truck image -->
             <div class="hero-bg hero-bg-desktop">
-                <img src="/images/hero-truck-2.webp"
+                <img src="/images/new-hero-image.webp"
                      alt="Senzu Transport - Scania Truck"
                      loading="eager" />
             </div>
