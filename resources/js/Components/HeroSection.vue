@@ -8,7 +8,7 @@
                      loading="eager" />
             </div>
             <div class="hero-bg hero-bg-mobile">
-                <img src="/images/hero-mobile-2.webp"
+                <img src="/images/new-mobile-hero-image.webp"
                      alt="Senzu Transport - Scania Truck"
                      loading="eager" />
             </div>
