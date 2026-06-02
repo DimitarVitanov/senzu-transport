@@ -390,7 +390,7 @@ useScrollReveal();
     }
 
     .hero-overlay-bt {
-        background: none;
+        background: rgba(10,10,10,0.35);
     }
 
     .hero-title {
