@@ -10,195 +10,182 @@ use Illuminate\Database\Seeder;
 
 class ContentSeeder extends Seeder
 {
+    /**
+     * Seeds the content for the single-page furniture-removals landing.
+     *
+     * Safe to re-run: settings/features/services/testimonials use position-keyed
+     * updateOrCreate, so nothing is duplicated. Contact details (email, socials,
+     * site name) use firstOrCreate so any admin edits are preserved. Only the
+     * phone is force-updated to the current brand number.
+     */
     public function run(): void
     {
-        // Site Settings
-        $settings = [
-            // General
+        $this->removeLegacySettings();
+
+        // --- Force-set: the current brand phone number ---
+        SiteSetting::set('phone', '0424 033 572', 'text', 'general');
+        SiteSetting::set('phone_raw', '+61424033572', 'text', 'general');
+
+        // --- Preserve if already set (created with defaults only when missing) ---
+        $ensure = [
             ['key' => 'site_name', 'value' => 'Senzu Transport', 'type' => 'text', 'group' => 'general'],
             ['key' => 'site_tagline', 'value' => 'And Logistics', 'type' => 'text', 'group' => 'general'],
-            ['key' => 'phone', 'value' => '0456 155 078', 'type' => 'text', 'group' => 'general'],
-            ['key' => 'phone_raw', 'value' => '+61456155078', 'type' => 'text', 'group' => 'general'],
-            ['key' => 'email', 'value' => 'senzutransport@gmail.com', 'type' => 'text', 'group' => 'general'],
+            ['key' => 'email', 'value' => 'info@senzutransport.com.au', 'type' => 'text', 'group' => 'general'],
             ['key' => 'notification_email', 'value' => 'senzutransport@gmail.com', 'type' => 'text', 'group' => 'general'],
-
-            // Hero
-            ['key' => 'hero_badge', 'value' => "BRISBANE'S TRUSTED DELIVERY SPECIALISTS", 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_title_line1', 'value' => 'DELIVERY,', 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_title_line2', 'value' => 'INSTALLATION & MORE —', 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_title_accent', 'value' => 'DONE RIGHT', 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_title_line3', 'value' => '', 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_description', 'value' => "We deliver more than just white goods.\nFrom furniture, drawers and single items to full loads —\nwe handle delivery, installation, store pickups\nand rubbish removal.", 'type' => 'textarea', 'group' => 'hero'],
-            ['key' => 'hero_cta_primary', 'value' => 'GET A QUOTE', 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_cta_secondary', 'value' => 'BOOK DELIVERY', 'type' => 'text', 'group' => 'hero'],
-
-            // Hero bullet points
-            ['key' => 'hero_bullet_1', 'value' => 'White goods delivery & installation', 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_bullet_2', 'value' => 'Room of choice + setup', 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_bullet_3', 'value' => 'Furniture, drawers & general items', 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_bullet_4', 'value' => 'Store pickups & rubbish removal', 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_bullet_5', 'value' => 'Single item or full load deliveries', 'type' => 'text', 'group' => 'hero'],
-            ['key' => 'hero_bullet_6', 'value' => 'Parcels, boxes & pallet transport', 'type' => 'text', 'group' => 'hero'],
-
-            // Services Section
-            ['key' => 'services_badge', 'value' => 'OUR SERVICES', 'type' => 'text', 'group' => 'services'],
-            ['key' => 'services_title', 'value' => 'WE DO MORE', 'type' => 'text', 'group' => 'services'],
-            ['key' => 'services_subtitle', 'value' => "SO YOU DON'T HAVE TO", 'type' => 'text', 'group' => 'services'],
-            ['key' => 'services_description', 'value' => "From single items to full loads - we deliver, install and remove.\nFast, reliable and done right.", 'type' => 'textarea', 'group' => 'services'],
-
-            // Stats
-            ['key' => 'stat_1_number', 'value' => '500+', 'type' => 'text', 'group' => 'stats'],
-            ['key' => 'stat_1_label', 'value' => 'JOBS COMPLETED', 'type' => 'text', 'group' => 'stats'],
-            ['key' => 'stat_1_sub', 'value' => 'Across Brisbane', 'type' => 'text', 'group' => 'stats'],
-            ['key' => 'stat_2_number', 'value' => '5.0', 'type' => 'text', 'group' => 'stats'],
-            ['key' => 'stat_2_label', 'value' => 'STAR RATING', 'type' => 'text', 'group' => 'stats'],
-            ['key' => 'stat_2_sub', 'value' => 'Google Reviews', 'type' => 'text', 'group' => 'stats'],
-            ['key' => 'stat_3_label', 'value' => 'FULLY INSURED', 'type' => 'text', 'group' => 'stats'],
-            ['key' => 'stat_3_sub', 'value' => 'Goods in Transit & Public Liability', 'type' => 'text', 'group' => 'stats'],
-            ['key' => 'stat_4_label', 'value' => 'LOCAL BRISBANE', 'type' => 'text', 'group' => 'stats'],
-            ['key' => 'stat_4_sub', 'value' => 'Proudly supporting our community', 'type' => 'text', 'group' => 'stats'],
-
-            // How It Works
-            ['key' => 'how_badge', 'value' => 'BUILT FOR THE TOUGH JOBS', 'type' => 'text', 'group' => 'how'],
-            ['key' => 'how_title', 'value' => 'WE HANDLE WHAT', 'type' => 'text', 'group' => 'how'],
-            ['key' => 'how_title_accent', 'value' => "OTHERS CAN'T", 'type' => 'text', 'group' => 'how'],
-            ['key' => 'how_description', 'value' => 'From tight staircases to heavy appliance installs, our trained team and modern equipment get every job done safely and efficiently.', 'type' => 'textarea', 'group' => 'how'],
-
-            // Why Choose Us
-            ['key' => 'why_title', 'value' => 'WHY CHOOSE', 'type' => 'text', 'group' => 'why'],
-            ['key' => 'why_title_accent', 'value' => 'SENZU TRANSPORT?', 'type' => 'text', 'group' => 'why'],
-
-            // CTA
-            ['key' => 'cta_title', 'value' => 'NEED IT DELIVERED TODAY?', 'type' => 'text', 'group' => 'cta'],
-            ['key' => 'cta_title_accent', 'value' => 'DONE RIGHT?', 'type' => 'text', 'group' => 'cta'],
-            ['key' => 'cta_description', 'value' => 'Same-day availability • Fast response', 'type' => 'text', 'group' => 'cta'],
-            ['key' => 'cta_tagline', 'value' => 'We get it done right.', 'type' => 'text', 'group' => 'cta'],
-
-            // About Page
-            ['key' => 'about_badge', 'value' => 'ABOUT US', 'type' => 'text', 'group' => 'about'],
-            ['key' => 'about_title', 'value' => 'SENZU TRANSPORT', 'type' => 'text', 'group' => 'about'],
-            ['key' => 'about_title_accent', 'value' => '& LOGISTICS', 'type' => 'text', 'group' => 'about'],
-            ['key' => 'about_subtitle', 'value' => "Brisbane's trusted delivery and installation service built on reliability, precision, and doing the job right the first time.", 'type' => 'textarea', 'group' => 'about'],
-            ['key' => 'about_paragraph_1', 'value' => "We don't just move items from A to B — we handle the full process. From single-item deliveries to full loads, our team takes care of transport, room-of-choice placement, installation, and rubbish removal, so you don't have to deal with multiple providers.", 'type' => 'textarea', 'group' => 'about'],
-            ['key' => 'about_paragraph_2', 'value' => "With experience across white goods, furniture, store pickups, and general freight, we understand how to handle items safely and professionally. Whether it's a fridge, washing machine, lounge, or pallet delivery, every job is treated with care and attention to detail.", 'type' => 'textarea', 'group' => 'about'],
-            ['key' => 'about_values_heading', 'value' => 'We focus on what matters most to our customers:', 'type' => 'text', 'group' => 'about'],
-            ['key' => 'about_value_1', 'value' => 'Turning up on time', 'type' => 'text', 'group' => 'about'],
-            ['key' => 'about_value_2', 'value' => 'Handling items properly', 'type' => 'text', 'group' => 'about'],
-            ['key' => 'about_value_3', 'value' => 'Communicating clearly', 'type' => 'text', 'group' => 'about'],
-            ['key' => 'about_value_4', 'value' => 'Leaving the space clean and ready to use', 'type' => 'text', 'group' => 'about'],
-            ['key' => 'about_paragraph_3', 'value' => "As a local Brisbane business, we take pride in providing a service that's fast, reliable, and easy to deal with. No shortcuts, no excuses — just solid work and consistent results.", 'type' => 'textarea', 'group' => 'about'],
-            ['key' => 'about_closing', 'value' => 'Senzu Transport and Logistics — we get it done right.', 'type' => 'text', 'group' => 'about'],
-
-            // Contact Page
-            ['key' => 'contact_badge', 'value' => 'GET IN TOUCH', 'type' => 'text', 'group' => 'contact'],
-            ['key' => 'contact_title', 'value' => 'CONTACT', 'type' => 'text', 'group' => 'contact'],
-            ['key' => 'contact_title_accent', 'value' => 'US', 'type' => 'text', 'group' => 'contact'],
-            ['key' => 'contact_subtitle', 'value' => 'Have a delivery or installation job? Get in touch for a fast, free quote. We respond quickly.', 'type' => 'textarea', 'group' => 'contact'],
-            ['key' => 'contact_form_heading', 'value' => 'Request a Free Quote', 'type' => 'text', 'group' => 'contact'],
-            ['key' => 'contact_form_description', 'value' => 'Fill in the details below and we\'ll get back to you ASAP.', 'type' => 'text', 'group' => 'contact'],
-            ['key' => 'contact_info_heading', 'value' => 'Other Ways to Reach Us', 'type' => 'text', 'group' => 'contact'],
-            ['key' => 'contact_hours', 'value' => 'Mon – Sun: 6:00am – 8:00pm', 'type' => 'text', 'group' => 'contact'],
-            ['key' => 'contact_area', 'value' => 'Servicing Brisbane & surrounding areas', 'type' => 'text', 'group' => 'contact'],
             ['key' => 'facebook_url', 'value' => 'https://www.facebook.com/senzutransport', 'type' => 'text', 'group' => 'contact'],
             ['key' => 'instagram_url', 'value' => 'https://www.instagram.com/senzutransport', 'type' => 'text', 'group' => 'contact'],
-
-            // Footer badges
-            ['key' => 'footer_badge_1', 'value' => 'LOCAL BRISBANE BUSINESS', 'type' => 'text', 'group' => 'footer'],
-            ['key' => 'footer_badge_2', 'value' => 'FULLY INSURED', 'type' => 'text', 'group' => 'footer'],
-            ['key' => 'footer_badge_3', 'value' => '5 STAR SERVICE', 'type' => 'text', 'group' => 'footer'],
-            ['key' => 'footer_badge_4', 'value' => 'SATISFACTION GUARANTEED', 'type' => 'text', 'group' => 'footer'],
         ];
-
-        foreach ($settings as $setting) {
-            SiteSetting::updateOrCreate(['key' => $setting['key']], $setting);
+        foreach ($ensure as $s) {
+            SiteSetting::firstOrCreate(['key' => $s['key']], $s);
         }
 
-        // Hero Features (icon row below hero)
-        $heroFeatures = [
-            ['title' => 'SINGLE ITEM DELIVERIES', 'description' => 'From one item to a full load.', 'icon' => 'cube', 'section' => 'hero_features', 'sort_order' => 1],
-            ['title' => 'SAME-DAY & URGENT JOBS', 'description' => 'Fast response when you need it most.', 'icon' => 'clock', 'section' => 'hero_features', 'sort_order' => 2],
-            ['title' => 'FULLY INSURED & RELIABLE', 'description' => 'Your items are in safe hands.', 'icon' => 'shield', 'section' => 'hero_features', 'sort_order' => 3],
-            ['title' => 'LOCAL BRISBANE BUSINESS', 'description' => 'Proudly serving homes and businesses.', 'icon' => 'map-pin', 'section' => 'hero_features', 'sort_order' => 4],
+        // --- Landing content (force-set to the current design) ---
+        $content = [
+            // Hero
+            ['key' => 'hero_title_line1', 'value' => 'FURNITURE', 'type' => 'text', 'group' => 'hero'],
+            ['key' => 'hero_title_line2', 'value' => 'REMOVALS', 'type' => 'text', 'group' => 'hero'],
+            ['key' => 'hero_title_accent', 'value' => 'BRISBANE', 'type' => 'text', 'group' => 'hero'],
+            ['key' => 'hero_subtitle_pre', 'value' => 'SAFE.', 'type' => 'text', 'group' => 'hero'],
+            ['key' => 'hero_subtitle_accent', 'value' => 'RELIABLE', 'type' => 'text', 'group' => 'hero'],
+            ['key' => 'hero_subtitle_post', 'value' => 'STRESS FREE.', 'type' => 'text', 'group' => 'hero'],
+            ['key' => 'hero_description', 'value' => "We handle your furniture with care from start to finish. Whether you're moving a single item, an apartment, or a large family home, our experienced team makes moving easy.", 'type' => 'textarea', 'group' => 'hero'],
+
+            // Services section
+            ['key' => 'services_title', 'value' => 'OUR REMOVAL SERVICES', 'type' => 'text', 'group' => 'services'],
+
+            // Process ("Moving Made Easy")
+            ['key' => 'process_title', 'value' => 'MOVING MADE EASY', 'type' => 'text', 'group' => 'process'],
+
+            // Service areas + reviews
+            ['key' => 'areas_title', 'value' => 'SERVICE AREAS', 'type' => 'text', 'group' => 'areas'],
+            ['key' => 'service_areas', 'value' => 'Brisbane, Gold Coast, Logan, Sunshine Coast, Ipswich, Toowoomba', 'type' => 'text', 'group' => 'areas'],
+            ['key' => 'reviews_title', 'value' => 'WHAT OUR CUSTOMERS SAY', 'type' => 'text', 'group' => 'areas'],
+
+            // CTA band
+            ['key' => 'cta_title_pre', 'value' => 'READY TO', 'type' => 'text', 'group' => 'cta'],
+            ['key' => 'cta_title_accent', 'value' => 'MOVE?', 'type' => 'text', 'group' => 'cta'],
+            ['key' => 'cta_subtitle', 'value' => 'Get a fast, obligation-free quote today.', 'type' => 'text', 'group' => 'cta'],
+
+            // Footer
+            ['key' => 'footer_tagline', 'value' => "Brisbane's trusted furniture removalists. We take the stress out of moving.", 'type' => 'textarea', 'group' => 'footer'],
+
+            // SEO
+            ['key' => 'seo_title', 'value' => 'Senzu Transport and Logistics | Professional Furniture Removals Brisbane', 'type' => 'text', 'group' => 'seo'],
+            ['key' => 'seo_description', 'value' => 'Professional furniture removalists in Brisbane. House moves, office relocations, packing & unpacking services. Fully insured, reliable movers serving Brisbane, Gold Coast, Sunshine Coast & Queensland.', 'type' => 'textarea', 'group' => 'seo'],
+            ['key' => 'seo_keywords', 'value' => 'furniture removals Brisbane, house movers, office relocations, packing services, removalists Brisbane, Gold Coast movers, Sunshine Coast removals, Queensland removals, furniture delivery, interstate removals', 'type' => 'textarea', 'group' => 'seo'],
+            ['key' => 'seo_og_image', 'value' => 'https://senzutransport.com.au/images/hero-section-1.webp', 'type' => 'text', 'group' => 'seo'],
+            ['key' => 'seo_url', 'value' => 'https://senzutransport.com.au', 'type' => 'text', 'group' => 'seo'],
+        ];
+        foreach ($content as $s) {
+            SiteSetting::updateOrCreate(['key' => $s['key']], $s);
+        }
+
+        // --- Features Bar (icons row) — section: hero_features ---
+        $featuresBar = [
+            ['title' => 'FULLY INSURED', 'description' => 'Your peace of mind is our priority.', 'icon' => 'shield'],
+            ['title' => 'LOCAL & INTERSTATE', 'description' => 'Moving across town or across the country.', 'icon' => 'truck'],
+            ['title' => 'RESIDENTIAL & COMMERCIAL', 'description' => 'Solutions for homes and businesses.', 'icon' => 'house'],
+            ['title' => 'EXPERIENCED REMOVALISTS', 'description' => 'Skilled team. Great service every time.', 'icon' => 'people'],
+            ['title' => 'MODERN FLEET', 'description' => 'Reliable trucks equipped for safe transport.', 'icon' => 'truck'],
+            ['title' => 'TRUSTED BY CUSTOMERS', 'description' => '5-star service you can rely on.', 'icon' => 'star'],
         ];
 
-        // How It Works Features
-        $howFeatures = [
-            ['title' => 'TIGHT ACCESS SPECIALISTS', 'description' => 'Stairs, apartments, narrow access — no problem.', 'icon' => 'stairs', 'section' => 'how_it_works', 'sort_order' => 1],
-            ['title' => 'EXPERIENCED TEAM', 'description' => 'Skilled, careful and professional in every delivery.', 'icon' => 'users', 'section' => 'how_it_works', 'sort_order' => 2],
-            ['title' => 'CARE-FIRST HANDLING', 'description' => 'We treat your items like our own.', 'icon' => 'heart', 'section' => 'how_it_works', 'sort_order' => 3],
+        // --- "Moving Made Easy" steps — section: how_it_works ---
+        $steps = [
+            ['title' => 'REQUEST A QUOTE', 'description' => 'Tell us what you need moved.', 'icon' => 'icon-list'],
+            ['title' => 'BOOK YOUR MOVE', 'description' => 'Choose a time that suits you.', 'icon' => 'icon-calendar'],
+            ['title' => 'WE PACK & TRANSPORT', 'description' => 'Our team handles everything with care.', 'icon' => 'icon-truck-two'],
+            ['title' => 'YOU RELAX', 'description' => 'Your items arrive safely at your new home.', 'icon' => 'icon-chair'],
         ];
 
-        // Why Choose Us Features
-        $whyFeatures = [
-            ['title' => 'DIFFICULT DELIVERY SPECIALISTS', 'description' => "We thrive where others say it can't be done.", 'icon' => 'trophy', 'section' => 'why_choose', 'sort_order' => 1],
-            ['title' => 'SAME-DAY AVAILABILITY', 'description' => "Need it done today? We've got you.", 'icon' => 'zap', 'section' => 'why_choose', 'sort_order' => 2],
-            ['title' => 'FULLY EQUIPPED TEAM', 'description' => 'Trolleys, straps, blankets & more.', 'icon' => 'wrench', 'section' => 'why_choose', 'sort_order' => 3],
-            ['title' => 'CARE-FIRST HANDLING', 'description' => 'Your items treated like our own.', 'icon' => 'hand-heart', 'section' => 'why_choose', 'sort_order' => 4],
+        // --- CTA feature icons — section: why_choose ---
+        $ctaFeatures = [
+            ['title' => 'SAFE HANDLING', 'description' => 'Careful with every item.', 'icon' => 'icon-safe-handlling'],
+            ['title' => 'ON-TIME SERVICE', 'description' => 'We show up when we say we will.', 'icon' => 'icon-on-time'],
+            ['title' => 'FULLY INSURED', 'description' => 'Your move is fully protected.', 'icon' => 'icon-fully-secured'],
+            ['title' => 'CAREFUL MOVERS', 'description' => 'Trained, professional team.', 'icon' => 'icon-careful-movers'],
         ];
 
-        foreach (array_merge($heroFeatures, $howFeatures, $whyFeatures) as $feature) {
-            Feature::updateOrCreate(
-                ['title' => $feature['title'], 'section' => $feature['section']],
-                $feature
+        $this->seedFeatureSection('hero_features', $featuresBar);
+        $this->seedFeatureSection('how_it_works', $steps);
+        $this->seedFeatureSection('why_choose', $ctaFeatures);
+
+        // --- Services (6 cards) ---
+        $services = [
+            ['title' => 'HOUSE MOVES', 'description' => 'Full home relocations throughout Brisbane and South East Queensland.', 'icon' => 'icon-house', 'image' => '/images/service-house-moves.webp'],
+            ['title' => 'OFFICE RELOCATIONS', 'description' => 'Fast and professional business relocations.', 'icon' => 'icon-office', 'image' => '/images/service-office.webp'],
+            ['title' => 'PACKING SERVICES', 'description' => 'Furniture wrapping, packing supplies and protection.', 'icon' => 'icon-packing', 'image' => '/images/service-packing.webp'],
+            ['title' => 'INTERSTATE MOVES', 'description' => 'Queensland, New South Wales and beyond.', 'icon' => 'icon-truck', 'image' => '/images/service-interstate.webp'],
+            ['title' => 'PACKAGING REMOVAL', 'description' => 'Removal of moving boxes and packaging waste.', 'icon' => 'icon-recycle', 'image' => '/images/service-packaging.webp'],
+            ['title' => 'FURNITURE DELIVERY', 'description' => 'Single furniture items and specialty deliveries.', 'icon' => 'icon-chair', 'image' => '/images/service-furniture.webp'],
+        ];
+        foreach ($services as $i => $service) {
+            Service::updateOrCreate(
+                ['sort_order' => $i + 1],
+                array_merge($service, ['bullet_points' => [], 'sort_order' => $i + 1, 'is_active' => true])
             );
         }
 
-        // Services
-        $services = [
-            [
-                'title' => 'FURNITURE, PARCELS & PALLET DELIVERY',
-                'description' => 'We deliver everything from single items to full loads — furniture, appliances, parcels and pallets.',
-                'icon' => 'truck',
-                'bullet_points' => ['Single item deliveries', 'Furniture & general items', 'Parcels, boxes & cartons', 'Pallet transport', 'Full loads & bulk deliveries', 'Careful handling'],
-                'sort_order' => 1,
-            ],
-            [
-                'title' => 'DELIVERY & INSTALLATION',
-                'description' => "We don't just drop off — we deliver, install and set up your items ready to use.",
-                'icon' => 'wrench',
-                'bullet_points' => ['Room of choice delivery', 'Connect & test appliances', 'Assembly & installation', 'Careful handling', 'Quality installation', 'One team. Done right.'],
-                'sort_order' => 2,
-            ],
-            [
-                'title' => 'FULL SERVICE DELIVERY',
-                'description' => 'From store pickup to final setup, we handle everything so you don\'t have to.',
-                'icon' => 'building',
-                'bullet_points' => ['Store & click-and-collect pickups', 'Room of choice delivery & setup', 'Rubbish & packaging removal', 'Old items taken away', 'Same-day & urgent jobs available', 'One team. Start to finish.'],
-                'sort_order' => 3,
-            ],
-        ];
-
-        foreach ($services as $service) {
-            Service::updateOrCreate(['sort_order' => $service['sort_order']], $service);
-        }
-
-        // Testimonials
+        // --- Testimonials (3) ---
         $testimonials = [
-            [
-                'name' => 'Sarah Mitchell',
-                'location' => 'Brisbane CBD',
-                'content' => 'Senzu Transport delivered and installed our new fridge and washing machine. The guys were professional, on time, and even took away all the packaging. Best delivery service in Brisbane!',
-                'rating' => 5,
-                'sort_order' => 1,
-            ],
-            [
-                'name' => 'James Cooper',
-                'location' => 'Paddington',
-                'content' => 'Had a heavy dishwasher that needed to go up 3 flights of narrow stairs. Other companies said no. Senzu got it done without a scratch. Absolute legends!',
-                'rating' => 5,
-                'sort_order' => 2,
-            ],
-            [
-                'name' => 'Lisa Thompson',
-                'location' => 'Bulimba',
-                'content' => 'Same-day delivery for an urgent job. They were quick, careful, and the price was very fair. Highly recommend Senzu Transport for any delivery needs.',
-                'rating' => 5,
-                'sort_order' => 3,
-            ],
+            ['name' => 'Sarah J.', 'location' => 'Brisbane', 'content' => 'Senzu Transport made our move so easy. The team was on time, careful and very professional.', 'rating' => 5],
+            ['name' => 'Michael T.', 'location' => 'Gold Coast', 'content' => 'Excellent service from start to finish. Highly recommend these guys!', 'rating' => 5],
+            ['name' => 'Lisa P.', 'location' => 'Logan', 'content' => 'Great communication, fair pricing and nothing was too much trouble. Would use again!', 'rating' => 5],
+        ];
+        foreach ($testimonials as $i => $testimonial) {
+            Testimonial::updateOrCreate(
+                ['sort_order' => $i + 1],
+                array_merge($testimonial, ['sort_order' => $i + 1, 'is_active' => true])
+            );
+        }
+    }
+
+    /**
+     * Remove settings that belonged to the old multi-page site (About/Services/
+     * Contact/Gallery pages, stats bar, etc.) which no longer have a home on the
+     * single-page landing. Contact details, phone, email and socials are kept.
+     */
+    private function removeLegacySettings(): void
+    {
+        $legacyKeys = [
+            // old hero
+            'hero_badge', 'hero_title_line3', 'hero_cta_primary', 'hero_cta_secondary',
+            'hero_bullet_1', 'hero_bullet_2', 'hero_bullet_3', 'hero_bullet_4', 'hero_bullet_5', 'hero_bullet_6',
+            // old services header
+            'services_badge', 'services_subtitle', 'services_description',
+            // stats bar
+            'stat_1_number', 'stat_1_label', 'stat_1_sub', 'stat_2_number', 'stat_2_label', 'stat_2_sub',
+            'stat_3_label', 'stat_3_sub', 'stat_4_label', 'stat_4_sub',
+            // how it works (now driven by Features)
+            'how_badge', 'how_title', 'how_title_accent', 'how_description',
+            // why choose (now driven by Features)
+            'why_title', 'why_title_accent',
+            // about page
+            'about_badge', 'about_title', 'about_title_accent', 'about_subtitle', 'about_paragraph_1',
+            'about_paragraph_2', 'about_values_heading', 'about_value_1', 'about_value_2', 'about_value_3',
+            'about_value_4', 'about_paragraph_3', 'about_closing',
+            // contact page text (facebook_url / instagram_url are kept)
+            'contact_badge', 'contact_title', 'contact_title_accent', 'contact_subtitle', 'contact_form_heading',
+            'contact_form_description', 'contact_info_heading', 'contact_hours', 'contact_area',
+            // footer badges
+            'footer_badge_1', 'footer_badge_2', 'footer_badge_3', 'footer_badge_4',
+            // old CTA copy
+            'cta_title', 'cta_description', 'cta_tagline',
         ];
 
-        foreach ($testimonials as $testimonial) {
-            Testimonial::updateOrCreate(['name' => $testimonial['name']], $testimonial);
+        SiteSetting::whereIn('key', $legacyKeys)->delete();
+    }
+
+    /**
+     * Seed a feature section by position so re-runs never duplicate rows.
+     */
+    private function seedFeatureSection(string $section, array $items): void
+    {
+        foreach ($items as $i => $item) {
+            Feature::updateOrCreate(
+                ['section' => $section, 'sort_order' => $i + 1],
+                array_merge($item, ['section' => $section, 'sort_order' => $i + 1, 'is_active' => true])
+            );
         }
     }
 }

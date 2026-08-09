@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\QuoteRequestController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FeatureController;
@@ -14,13 +13,15 @@ use App\Http\Controllers\Admin\PasswordController;
 use App\Http\Controllers\Admin\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
-// Public routes
+// Public routes — single-page site
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/services', [PageController::class, 'services'])->name('services');
-Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
-Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/quote', [QuoteRequestController::class, 'store'])->name('quote.store');
+
+// Legacy multi-page URLs now 301-redirect to the single page (kept for old links/SEO)
+Route::permanentRedirect('/services', '/');
+Route::permanentRedirect('/about', '/');
+Route::permanentRedirect('/gallery', '/');
+Route::permanentRedirect('/contact', '/');
 
 // Auth routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

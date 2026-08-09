@@ -16,6 +16,9 @@ function raf(time) {
 }
 requestAnimationFrame(raf);
 
+// Expose Lenis so components can request smooth, offset-aware anchor scrolling
+window.lenis = lenis;
+
 createInertiaApp({
     title: (title) => title ? `${title} - Senzu Transport` : 'Senzu Transport',
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),

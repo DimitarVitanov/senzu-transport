@@ -64,16 +64,26 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-gray-300 text-xs font-semibold mb-1.5 uppercase tracking-wider">Icon</label>
-                                <select v-model="form.icon" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-senzu/50 transition-colors">
-                                    <option value="truck">Truck</option>
-                                    <option value="wrench">Wrench</option>
-                                    <option value="building">Building</option>
-                                </select>
+                                <input v-model="form.icon" type="text" list="service-icons" placeholder="icon-house" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-senzu/50 transition-colors">
+                                <datalist id="service-icons">
+                                    <option value="icon-house" />
+                                    <option value="icon-office" />
+                                    <option value="icon-packing" />
+                                    <option value="icon-truck" />
+                                    <option value="icon-recycle" />
+                                    <option value="icon-chair" />
+                                </datalist>
+                                <p class="text-gray-600 text-[11px] mt-1">Icon file in /public/images (without .svg)</p>
                             </div>
                             <div>
                                 <label class="block text-gray-300 text-xs font-semibold mb-1.5 uppercase tracking-wider">Sort Order</label>
                                 <input v-model.number="form.sort_order" type="number" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-senzu/50 transition-colors">
                             </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-300 text-xs font-semibold mb-1.5 uppercase tracking-wider">Card Image</label>
+                            <input v-model="form.image" type="text" placeholder="/images/service-house-moves.webp" class="w-full bg-dark-bg border border-dark-border rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-senzu/50 transition-colors">
+                            <p class="text-gray-600 text-[11px] mt-1">Path to the card image (upload via Gallery, then paste the path here).</p>
                         </div>
                         <div>
                             <label class="block text-gray-300 text-xs font-semibold mb-1.5 uppercase tracking-wider">Bullet Points (one per line)</label>
@@ -112,7 +122,8 @@ const bulletText = ref('');
 const form = useForm({
     title: '',
     description: '',
-    icon: 'truck',
+    icon: 'icon-house',
+    image: '',
     bullet_points: [],
     sort_order: 0,
     is_active: true,
@@ -131,6 +142,7 @@ function openEdit(service) {
     form.title = service.title;
     form.description = service.description;
     form.icon = service.icon;
+    form.image = service.image || '';
     form.sort_order = service.sort_order;
     form.is_active = service.is_active;
     bulletText.value = (service.bullet_points || []).join('\n');

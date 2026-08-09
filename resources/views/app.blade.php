@@ -11,51 +11,34 @@
         <meta name="twitter:site" content="@senzutransport">
         <meta name="geo.region" content="AU-QLD">
         <meta name="geo.placename" content="Brisbane">
-        <title inertia>{{ config('app.name', 'Senzu Transport') }}</title>
+        <title inertia>{{ $seo['title'] ?? config('app.name', 'Senzu Transport') }}</title>
+        <meta name="description" content="{{ $seo['description'] ?? '' }}">
+        <meta name="keywords" content="{{ $seo['keywords'] ?? '' }}">
+        <link rel="canonical" href="{{ $seo['url'] ?? 'https://senzutransport.com.au' }}">
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ $seo['url'] ?? '' }}">
+        <meta property="og:title" content="{{ $seo['title'] ?? '' }}">
+        <meta property="og:description" content="{{ $seo['description'] ?? '' }}">
+        <meta property="og:image" content="{{ $seo['image'] ?? '' }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <!-- Twitter -->
+        <meta name="twitter:title" content="{{ $seo['title'] ?? '' }}">
+        <meta name="twitter:description" content="{{ $seo['description'] ?? '' }}">
+        <meta name="twitter:image" content="{{ $seo['image'] ?? '' }}">
+
         <link rel="icon" type="image/png" href="/icons/truck-favi.png">
         <link rel="shortcut icon" type="image/png" href="/icons/truck-favi.png">
         <link rel="apple-touch-icon" href="/icons/truck-favi.png">
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900|poppins:400,500,600,700,800&display=swap" rel="stylesheet" />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @inertiaHead
-        @verbatim
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            "name": "Senzu Transport & Logistics",
-            "description": "Brisbane's trusted delivery and installation service. White goods delivery, furniture transport, appliance installation, and rubbish removal.",
-            "url": "https://senzutransport.com.au",
-            "telephone": "+61456155078",
-            "image": "https://senzutransport.com.au/images/hero-truck-2.webp",
-            "logo": "https://senzutransport.com.au/images/logo.webp",
-            "areaServed": {
-                "@type": "City",
-                "name": "Brisbane",
-                "addressRegion": "QLD",
-                "addressCountry": "AU"
-            },
-            "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Brisbane",
-                "addressRegion": "QLD",
-                "addressCountry": "AU"
-            },
-            "priceRange": "$$",
-            "openingHoursSpecification": {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-                "opens": "06:00",
-                "closes": "20:00"
-            },
-            "sameAs": [
-                "https://www.facebook.com/senzutransport",
-                "https://www.instagram.com/senzutransport"
-            ]
-        }
-        </script>
-        @endverbatim
+        <script type="application/ld+json">{!! $seo['jsonld'] ?? '' !!}</script>
     </head>
     <body class="antialiased" style="overflow:hidden">
         <!-- Page Loader -->

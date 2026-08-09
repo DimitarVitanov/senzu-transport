@@ -1,158 +1,105 @@
+<script setup>
+import { computed, ref } from 'vue';
+import { usePage } from '@inertiajs/vue3';
+import Navbar from '@/Components/landing/Navbar.vue';
+import Hero from '@/Components/landing/Hero.vue';
+import FeaturesBar from '@/Components/landing/FeaturesBar.vue';
+import ServicesSection from '@/Components/landing/ServicesSection.vue';
+import AboutSection from '@/Components/landing/AboutSection.vue';
+import CTASection from '@/Components/landing/CTASection.vue';
+import Footer from '@/Components/landing/Footer.vue';
+import QuoteModal from '@/Components/QuoteModal.vue';
+
+const props = defineProps({
+    settings: { type: Object, default: () => ({}) },
+    services: { type: Array, default: () => [] },
+    featuresBar: { type: Array, default: () => [] },
+    steps: { type: Array, default: () => [] },
+    ctaFeatures: { type: Array, default: () => [] },
+    testimonials: { type: Array, default: () => [] },
+});
+
+const page = usePage();
+const nav = computed(() => page.props.nav || {});
+
+// Settings helper — returns the stored value or a fallback default.
+const s = (key, fallback = '') => {
+    const v = props.settings?.[key];
+    return v === undefined || v === null || v === '' ? fallback : v;
+};
+
+const phone = computed(() => nav.value.phone || '0424 033 572');
+const phoneRaw = computed(() => nav.value.phone_raw || '+61424033572');
+const email = computed(() => nav.value.email || 'info@senzutransport.com.au');
+const facebookUrl = computed(() => nav.value.facebook_url || 'https://facebook.com');
+const instagramUrl = computed(() => nav.value.instagram_url || 'https://instagram.com');
+
+const serviceAreas = computed(() =>
+    s('service_areas', 'Brisbane, Gold Coast, Logan, Sunshine Coast, Ipswich, Toowoomba')
+        .split(',')
+        .map((a) => a.trim())
+        .filter(Boolean)
+);
+
+const showQuote = ref(false);
+</script>
+
 <template>
-    <Head>
-        <title>Senzu Transport & Logistics | Brisbane's Trusted Delivery & Installation Specialists</title>
-        <meta name="description" content="Senzu Transport — Brisbane's trusted delivery and installation service. White goods delivery, furniture transport, appliance installation, rubbish removal. Same-day availability. Get a free quote today!">
-        <meta name="keywords" content="Brisbane delivery, white goods delivery, appliance installation, furniture delivery, pallet transport, Brisbane logistics, same day delivery Brisbane, delivery and installation Brisbane, rubbish removal Brisbane">
-        <link rel="canonical" href="https://senzutransport.com.au/">
-        <meta property="og:title" content="Senzu Transport & Logistics | Delivery & Installation Done Right">
-        <meta property="og:description" content="Brisbane's trusted delivery and installation specialists. White goods, furniture, appliances — delivered, installed, done right. Same-day availability.">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://senzutransport.com.au/">
-        <meta property="og:image" content="https://senzutransport.com.au/images/hero-truck-2.webp">
-        <meta name="twitter:title" content="Senzu Transport & Logistics | Delivery Done Right">
-        <meta name="twitter:description" content="Brisbane's trusted delivery and installation specialists. Same-day availability. Get a free quote!">
-        <meta name="twitter:image" content="https://senzutransport.com.au/images/hero-truck-2.webp">
-    </Head>
+    <div class="min-h-screen bg-ink font-sans text-white">
+        <Navbar :phone="phone" :phone-raw="phoneRaw" @open-quote="showQuote = true" />
 
-    <MainLayout>
-        <!-- DARK: Hero with truck background + floating features card -->
-        <HeroSection :settings="settings" @open-quote="showQuote = true">
-            <template #features>
-                <FeaturesRow :features="heroFeatures" />
-            </template>
-        </HeroSection>
-
-        <!-- Spacer for the floating card that sticks out below the hero -->
-        <div class="features-spacer"></div>
-
-        <!-- WHITE: Services cards -->
-        <ServicesSection
-            :services="services"
-            :badge="settings.services_badge"
-            :title="settings.services_title"
-            :subtitle="settings.services_subtitle"
-            :description="settings.services_description"
+        <Hero
+            :phone="phone"
+            :phone-raw="phoneRaw"
+            :title1="s('hero_title_line1', 'FURNITURE')"
+            :title2="s('hero_title_line2', 'REMOVALS')"
+            :accent="s('hero_title_accent', 'BRISBANE')"
+            :subtitle-pre="s('hero_subtitle_pre', 'SAFE.')"
+            :subtitle-accent="s('hero_subtitle_accent', 'RELIABLE')"
+            :subtitle-post="s('hero_subtitle_post', 'STRESS FREE.')"
+            :description="s('hero_description', `We handle your furniture with care from start to finish. Whether you're moving a single item, an apartment, or a large family home, our experienced team makes moving easy.`)"
+            @open-quote="showQuote = true"
         />
 
-        <!-- Anchor point for future gallery section -->
-        <div id="gallery"></div>
+        <FeaturesBar :features="featuresBar" />
 
-        <!-- Stats + Green CTA combined -->
-        <div id="contact"></div>
-        <StatsBar :settings="settings" />
+        <ServicesSection :services="services" :title="s('services_title', 'OUR REMOVAL SERVICES')" />
 
-        <!-- Dark split section before footer -->
-        <HowItWorks
-            :features="resolvedHowFeatures"
-            :badge="settings.how_badge || 'BUILT FOR THE TOUGH JOBS'"
-            :title="settings.how_title || 'WE HANDLE WHAT'"
-            :title-accent="settings.how_title_accent || `OTHERS CAN'T`"
-            :description="settings.how_description || 'From tight staircases to heavy appliance installs, our trained team and modern equipment get every job done safely and efficiently.'"
+        <AboutSection
+            :steps="steps"
+            :testimonials="testimonials"
+            :service-areas="serviceAreas"
+            :process-title="s('process_title', 'MOVING MADE EASY')"
+            :areas-title="s('areas_title', 'SERVICE AREAS')"
+            :reviews-title="s('reviews_title', 'WHAT OUR CUSTOMERS SAY')"
         />
 
-        <WhyChooseUs
-            :features="resolvedWhyFeatures"
-            :title="settings.why_title || 'WHY CHOOSE'"
-            :title-accent="settings.why_title_accent || 'SENZU TRANSPORT?'"
+        <CTASection
+            :phone="phone"
+            :phone-raw="phoneRaw"
+            :title-pre="s('cta_title_pre', 'READY TO')"
+            :title-accent="s('cta_title_accent', 'MOVE?')"
+            :subtitle="s('cta_subtitle', 'Get a fast, obligation-free quote today.')"
+            :features="ctaFeatures"
+            @open-quote="showQuote = true"
         />
 
-        <CtaSection
-            :cta-title="settings.cta_title || 'NEED A DELIVERY'"
-            :cta-title-accent="settings.cta_title_accent || 'DONE RIGHT?'"
-            :cta-description="settings.cta_description || 'Get in touch today for a fast, free quote.'"
-            :cta-tagline="settings.cta_tagline || 'We get it done right.'"
-            :phone="settings.phone || '0456 155 078'"
-            :phone-raw="settings.phone_raw || '+61456155078'"
+        <Footer
+            :phone="phone"
+            :phone-raw="phoneRaw"
+            :email="email"
+            :tagline="s('footer_tagline', `Brisbane's trusted furniture removalists. We take the stress out of moving.`)"
+            :facebook-url="facebookUrl"
+            :instagram-url="instagramUrl"
             @open-quote="showQuote = true"
         />
 
         <QuoteModal
             :show="showQuote"
-            :phone-raw="settings.phone_raw || '+61456155078'"
-            :facebook-url="settings.facebook_url || 'https://facebook.com'"
-            :instagram-url="settings.instagram_url || 'https://instagram.com'"
+            :phone-raw="phoneRaw"
+            :facebook-url="facebookUrl"
+            :instagram-url="instagramUrl"
             @close="showQuote = false"
         />
-    </MainLayout>
+    </div>
 </template>
-
-<script setup>
-import { computed, ref } from 'vue';
-import { Head } from '@inertiajs/vue3';
-import MainLayout from '@/Layouts/MainLayout.vue';
-import HeroSection from '@/Components/HeroSection.vue';
-import FeaturesRow from '@/Components/FeaturesRow.vue';
-import ServicesSection from '@/Components/ServicesSection.vue';
-import StatsBar from '@/Components/StatsBar.vue';
-import HowItWorks from '@/Components/HowItWorks.vue';
-import WhyChooseUs from '@/Components/WhyChooseUs.vue';
-import CtaSection from '@/Components/CtaSection.vue';
-import QuoteModal from '@/Components/QuoteModal.vue';
-
-const props = defineProps({
-    settings: { type: Object, required: true },
-    heroFeatures: { type: Array, required: true },
-    services: { type: Array, required: true },
-    howFeatures: { type: Array, required: true },
-    whyFeatures: { type: Array, required: true },
-});
-
-const showQuote = ref(false);
-
-const fallbackHowFeatures = [
-    {
-        id: 'fallback-how-1',
-        title: 'TIGHT ACCESS SPECIALISTS',
-        description: 'Stairs, apartments, narrow access - no problem.',
-    },
-    {
-        id: 'fallback-how-2',
-        title: 'EXPERIENCED TEAM',
-        description: 'Skilled, careful and professional in every delivery.',
-    },
-    {
-        id: 'fallback-how-3',
-        title: 'CARE-FIRST HANDLING',
-        description: 'We treat your items like our own.',
-    },
-];
-
-const resolvedHowFeatures = computed(() =>
-    Array.isArray(props.howFeatures) && props.howFeatures.length > 0
-        ? props.howFeatures
-        : fallbackHowFeatures
-);
-
-const fallbackWhyFeatures = [
-    {
-        id: 'fallback-why-1',
-        title: 'DIFFICULT DELIVERY SPECIALISTS',
-        description: "We thrive where others say it can't be done.",
-        icon: 'trophy',
-    },
-    {
-        id: 'fallback-why-2',
-        title: 'SAME-DAY AVAILABILITY',
-        description: "Need it done today? We've got you.",
-        icon: 'zap',
-    },
-    {
-        id: 'fallback-why-3',
-        title: 'FULLY EQUIPPED TEAM',
-        description: 'Trolleys, straps, blankets & more.',
-        icon: 'wrench',
-    },
-    {
-        id: 'fallback-why-4',
-        title: 'CARE-FIRST HANDLING',
-        description: 'Your items treated like our own.',
-        icon: 'hand-heart',
-    },
-];
-
-const resolvedWhyFeatures = computed(() =>
-    Array.isArray(props.whyFeatures) && props.whyFeatures.length > 0
-        ? props.whyFeatures
-        : fallbackWhyFeatures
-);
-</script>
