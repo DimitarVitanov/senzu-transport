@@ -46,9 +46,8 @@ class HandleInertiaRequests extends Middleware
                 'error' => fn () => $request->session()->get('error'),
             ],
             'nav' => fn () => [
-                'phone' => SiteSetting::get('phone', '0424 033 572'),
-                'phone_raw' => SiteSetting::get('phone_raw', '+61424033572'),
-                'email' => SiteSetting::get('email', 'info@senzutransport.com.au'),
+                'phone' => SiteSetting::get('phone', '0456 155 078'),
+                'phone_raw' => SiteSetting::get('phone_raw', '+61456155078'),
                 'facebook_url' => SiteSetting::get('facebook_url', ''),
                 'instagram_url' => SiteSetting::get('instagram_url', ''),
             ],
